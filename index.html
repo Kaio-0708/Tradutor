@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=], initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> 
     <link rel="stylesheet" href="./Styles/style.css"/>
+    <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
     <title> Tradutor</title>
 </head>
 <body>
@@ -13,33 +14,40 @@
         <img src="./Assets/logo.png" class="logo" >
         
         <div class="w-full max-w-xl mb-8">
-            <select class="w-full mb-2 border border-gray-300 rounded-md p-2 text-gray-800">
+            <select  id="idiomaDestino" class="w-full mb-2 border border-gray-300 rounded-md p-2 text-gray-800">
                 <option value="">Selecionar Idioma de Tradução</option>
-                <option value="espanhol">Espanhol</option>
-                <option value="frances">Francês</option>
-                <option value="ingles">Inglês</option>
-                <option value="italiano">Italiano</option>   
-                <option value="portugues">Português</option>
+                <option value="de">Alemão</option>
+                <option value="es">Espanhol</option>
+                <option value="fr">Francês</option>
+                <option value="en">Inglês</option>
+                <option value="it">Italiano</option>
+                <option value="ja">Japonês</option>
+                <option value="pt">Português(Brasil)</option>
             </select>
-            <textarea rows="10" placeholder="Texto para traduzir" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
-            <button class="mt-2 py-2 px-4 bg-gray-600 hover:bg-black-500 rounded-md w-full">Traduzir</button>
+            <textarea id="textoOriginal" rows="10" placeholder="Texto para traduzir" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+            <button id="btnTraduzir" class="mt-2 py-2 px-4 bg-gray-600 hover:bg-black rounded-md w-full">Traduzir</button>
         </div>
     
         <div class="w-full max-w-xl mb-8">
-            <textarea rows="10" placeholder="Texto traduzido" class="w-full p-2 border border-gray-300 rounded-md" readonly></textarea>
-            <select class="w-full mt-2 border border-gray-300 rounded-md p-2 text-gray-800">
+            <textarea id="textoTraduzido" rows="10" placeholder="Texto traduzido" class="w-full p-2 border border-gray-300 rounded-md"></textarea>
+            <select id="idiomaAudio" class="w-full mt-2 border border-gray-300 rounded-md p-2 text-gray-800">
                 <option value="">Selecionar Idioma do Texto Traduzido</option>
-                <option value="espanhol">Espanhol</option>
-                <option value="frances">Francês</option>
-                <option value="ingles">Inglês</option>
-                <option value="italiano">Italiano</option>   
-                <option value="portugues">Português</option>
+                <option value="de">Alemão</option>
+                <option value="es">Espanhol</option>
+                <option value="fr">Francês</option>
+                <option value="en">Inglês</option>
+                <option value="it">Italiano</option>
+                <option value="ja">Japonês</option>
+                <option value="pt">Português(Brasil)</option>
             </select>
+            <button id="btnOuvir" class="mt-2 py-2 px-4 bg-gray-600 hover:bg-black rounded-md w-full">Ouvir Áudio</button>
         </div>
 
         <footer class="mt-6 text-gray-400 text-center">
             <p>Direitos reservados a K. Vitor</p>
         </footer>
     </div>
+    <script src="app.js"></script>
 </body>
 </html>
+
