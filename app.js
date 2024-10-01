@@ -1,128 +1,74 @@
-/*
-async function traduzirTexto(texto, idiomaDestino) {
-    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=pt|${idiomaDestino}`;
-    
-    try {
-        const response = await fetch(url);
-        
-        if (!response.ok) {
-            throw new Error('Erro na resposta da API');
-        }
-
-        const data = await response.json();
-        return data.responseData.translatedText;
-    } catch (error) {
-        console.error('Erro ao traduzir:', error);
-        alert('Erro ao traduzir o texto. Tente novamente mais tarde.');
-        return null;
-    }
-}
-
-// Função para falar o texto traduzido com a ResponsiveVoice
-function falarTexto(texto, idioma) {
-    responsiveVoice.speak(texto, idioma);
-}
-
-// Evento ao clicar no botão de traduzir
-document.getElementById('btnTraduzir').addEventListener('click', async () => {
-    const textoOriginal = document.getElementById('textoOriginal').value;
-    const idiomaDestino = document.getElementById('idiomaDestino').value;
-
-    if (!textoOriginal || !idiomaDestino) {
-        alert('Por favor, preencha o texto e selecione um idioma.');
-        return;
-    }
-
-    const textoTraduzido = await traduzirTexto(textoOriginal, idiomaDestino);
-    if (textoTraduzido) {
-        document.getElementById('textoTraduzido').value = textoTraduzido;
-    }
-});
-
-// Evento ao clicar no botão de ouvir áudio
-document.getElementById('btnOuvir').addEventListener('click', () => {
-    const textoTraduzido = document.getElementById('textoTraduzido').value;
-    const idiomaAudio = document.getElementById('idiomaAudio').value;
-
-    if (!textoTraduzido || !idiomaAudio) {
-        alert('Por favor, preencha o texto traduzido e selecione um idioma para o áudio.');
-        return;
-    }
-
-    falarTexto(textoTraduzido, idiomaAudio);
-});
-*/
-/*document.getElementById('btnTraduzir').addEventListener('click', async () => {
-    const textoOriginal = document.getElementById('textoOriginal').value;
-    const idiomaDestino = document.getElementById('idiomaDestino').value;
-
-    if (!textoOriginal || !idiomaDestino) {
-        alert("Por favor, preencha todos os campos!");
-        return;
-    }
-
-    const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ texto: textoOriginal, idioma_destino: idiomaDestino }),
-    });
-
-    const data = await response.json();
-    document.getElementById('textoTraduzido').value = data.texto_traduzido;
-});
-
-function playAudio() {
-    const audio = new Audio('traducao.mp3');
-    audio.play();
-}
-    */
 const textareaFrom = document.querySelector("#textoOriginal");
 const textareaTo = document.querySelector("#textoTraduzido");
 const btnTranslate = document.querySelector("#btnTraduzir");
 const btnListen = document.querySelector("#btnOuvir");
-const selectLanguageTo = document.querySelector("#idiomaDestino");
-const selectAudioLanguage = document.querySelector("#idiomaAudio");
+const selects = document.querySelectorAll("select");
 
-// Adiciona evento ao botão de tradução
-btnTranslate.addEventListener("click", async () => {
-    if (textareaFrom.value && selectLanguageTo.value) {
-        await loadTranslation();
-    } else {
-        alert("Por favor, preencha todos os campos!");
+const idiomas = {
+    "de": "Alemão",
+    "es": "Espanhol",
+    "fr": "Francês",
+    "en": "Inglês",
+    "it": "Italiano",
+    "ja": "Japonês",
+    "pt": "Português(Brasil)"
+};
+
+selects.forEach((select) => {
+    for (let idioma in idiomas) {
+        let selected = "";
+        if (select.id === "idiomaOrigem" && idioma === "pt") {
+            selected = "selected";
+        } else if (select.id === "idiomaDestino" && idioma === "en") {
+            selected = "selected";
+        }
+
+        const option = `<option value="${idioma}" ${selected}>${idiomas[idioma]}</option>`;
+        select.insertAdjacentHTML("beforeend", option);
     }
 });
 
-// Função para carregar a tradução e o áudio
-async function loadTranslation() {
-    const textoOriginal = textareaFrom.value;
-    const idiomaDestino = selectLanguageTo.value; // Seleciona o idioma de destino
+btnTranslate.addEventListener("click", () => {
+    if (textareaFrom.value) {
+        loadTranslation();
+    } else {
+        alert("Por favor, insira um texto para traduzir.");
+        textareaTo.value = "";
+    }
+});
 
-    const response = await fetch('/api/translate', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ texto: textoOriginal, idioma_destino: idiomaDestino }),
-    });
+function loadTranslation() {
+    const origem = document.querySelector('#idiomaOrigem').value;
+    const destino = document.querySelector('#idiomaDestino').value;
+    const textoOriginal = textareaFrom.value.toLowerCase();
 
-    const data = await response.json();
-    textareaTo.value = data.texto_traduzido;
+    fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(textoOriginal)}&langpair=${origem}|${destino}`)
+        .then((res) => res.json())
+        .then((data) => {
+            textareaTo.value = data.responseData.translatedText;
+        });
 }
 
-// Adiciona evento ao botão de ouvir áudio
 btnListen.addEventListener("click", () => {
-    const audioLanguage = selectAudioLanguage.value;
-    if (audioLanguage) {
-        playAudio();
+    const texto = textareaTo.value;
+
+    if (texto) {
+        const idiomaDestino = document.querySelector('#idiomaDestino').value;
+        responsiveVoice.speak(texto, getVoiceName(idiomaDestino));
     } else {
-        alert("Por favor, selecione um idioma para o áudio!");
+        alert("Por favor, traduza um texto antes de ouvir.");
     }
 });
 
-// Função para reproduzir o áudio
-function playAudio() {
-    const audio = new Audio('traducao.mp3');
-    audio.play();
+function getVoiceName(idioma) {
+    const voices = {
+        "de": "Deutsch Female",
+        "es": "Spanish Latin American Female",
+        "fr": "French Female",
+        "en": "UK English Female",
+        "it": "Italian Female",
+        "ja": "Japanese Female",
+        "pt": "Brazilian Portuguese Female"
+    };
+    return voices[idioma] || "Brazilian Portuguese Female";
 }
