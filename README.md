@@ -1,12 +1,12 @@
 # Tradutor
 
-Este projeto é um tradutor de idiomas simples, desenvolvido com HTML, CSS e JavaScript, utilizando a biblioteca Tailwind CSS para estilização e a API MyMemory para traduções. O Tradutor permite que os usuários selecionem um idioma de origem e um idioma de destino, insiram texto e obtenham a tradução correspondente. Além disso, o aplicativo oferece a funcionalidade de ouvir o texto traduzido em voz, utilizando a biblioteca **ResponsiveVoice**.
+Este projeto é um tradutor de idiomas simples, desenvolvido com HTML, CSS e JavaScript, utilizando a biblioteca Tailwind CSS para estilização e a API MyMemory para traduções. O Tradutor permite que os usuários selecionem um idioma de origem e um idioma de destino, insiram texto e obtenham a tradução correspondente. Além disso, o aplicativo oferece a funcionalidade de ouvir o texto traduzido em voz, utilizando a Web Speech API.
 
 ## Funcionalidades
 
 - **Seleção de Idiomas:** Os usuários podem escolher entre vários idiomas, incluindo Alemão, Espanhol, Francês, Inglês, Italiano, Japonês e Português (Brasil).
 - **Tradução de Texto:** Insira o texto no idioma de origem e obtenha a tradução instantaneamente.
-- **Leitura de Texto:** Ouça a tradução em voz alta, utilizando a biblioteca ResponsiveVoice.
+- **Leitura de Texto:** Ouça a tradução em voz alta, utilizando a Web Speech API.
 
 ## Tecnologias Utilizadas
 
@@ -14,7 +14,7 @@ Este projeto é um tradutor de idiomas simples, desenvolvido com HTML, CSS e Jav
 - CSS (Tailwind CSS)
 - JavaScript
 - API MyMemory
-- ResponsiveVoice
+- Web Speech API
 
 ## Como Usar
 
