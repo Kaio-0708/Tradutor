@@ -3,6 +3,7 @@ const textareaTo = document.querySelector("#textoTraduzido");
 const btnTranslate = document.querySelector("#btnTraduzir");
 const btnListen = document.querySelector("#btnOuvir");
 const selects = document.querySelectorAll("select");
+const apiKey = 'de16ea9111c8432d989b64844045cbcf';
 
 const idiomas = {
     "de": "Alemão",
@@ -49,6 +50,7 @@ function loadTranslation() {
         });
 }
 
+/* ResponsiveVoice
 btnListen.addEventListener("click", () => {
     const texto = textareaTo.value;
 
@@ -72,3 +74,49 @@ function getVoiceName(idioma) {
     };
     return voices[idioma] || "Brazilian Portuguese Female";
 }
+    */
+
+//  Web Speech API
+btnListen.addEventListener("click", () => {
+    const texto = textareaTo.value;
+
+    if (texto) {
+        const idiomaDestino = document.querySelector('#idiomaDestino').value;
+        speakText(texto, idiomaDestino);
+    } else {
+        alert("Por favor, traduza um texto antes de ouvir.");
+    }
+});
+
+function speakText(text, languageCode) {
+    const utterance = new SpeechSynthesisUtterance(text);
+
+    const voiceMap = {
+        "de": "de-DE",
+        "es": "es-ES",
+        "fr": "fr-FR",
+        "en": "en-US",  
+        "it": "it-IT",
+        "ja": "ja-JP",
+        "pt": "pt-BR"
+    };
+
+    const voiceName = voiceMap[languageCode] || "pt-BR";
+    utterance.lang = voiceName;
+
+    const voices = window.speechSynthesis.getVoices();
+
+    const selectedVoice = voices.find(voice => voice.lang === voiceName);
+    if (selectedVoice) {
+        utterance.voice = selectedVoice;
+    } else {
+        console.warn(`Voz não encontrada para o idioma: ${voiceName}`);
+    }
+
+    speechSynthesis.speak(utterance);
+}
+
+window.speechSynthesis.onvoiceschanged = () => {
+    window.speechSynthesis.getVoices();
+};
+
